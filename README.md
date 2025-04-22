@@ -1,6 +1,6 @@
 # Perlin Noise
 
-![thumbnail](./perlin_noise.gif)
+![thumbnail](./demo.gif)
 
 ## Quick Start
 

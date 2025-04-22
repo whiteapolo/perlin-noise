@@ -4,6 +4,7 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_stdinc.h>
 #include <SDL2/SDL_timer.h>
+#include <SDL2/SDL_video.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -12,8 +13,8 @@
 #include "perlin_noise.h"
 #include <SDL2/SDL.h>
 
-#define WIDTH 10
-#define HEIGHT WIDTH
+#define WIDTH 12
+#define HEIGHT 8
 #define DEPTH 100
 
 #define WINDOW_WIDTH 800
@@ -56,7 +57,7 @@ int main(void)
 	SDL_Init(SDL_INIT_VIDEO);
 
 	SDL_Window *window = SDL_CreateWindow(
-			"Maze",
+			"Perlin Noise",
 			SDL_WINDOWPOS_CENTERED,
 			SDL_WINDOWPOS_CENTERED,
 			WINDOW_WIDTH, WINDOW_HEIGHT,
@@ -77,13 +78,6 @@ int main(void)
 	);
 
 	Uint32 *pixels = malloc(sizeof(Uint32) * WIDTH * DEPTH * HEIGHT * DEPTH);
-
-	SDL_Rect texture_dimentions = {
-		.x = 0,
-		.y = 0,
-		.w = WIDTH * DEPTH,
-		.h = HEIGHT * DEPTH,
-	};
 
 	SDL_Event event;
 	bool running = true;
@@ -123,6 +117,17 @@ int main(void)
 
 		render_perlin_noise(perlinGrid, pixels, DEPTH);
 		SDL_UpdateTexture(texture, NULL, pixels, sizeof(Uint32) * WIDTH * DEPTH);
+
+		int window_width;
+		int window_height;
+		SDL_GetWindowSize(window, &window_width, &window_height);
+
+		SDL_Rect texture_dimentions = {
+			.x = (window_width - (WIDTH * DEPTH)) / 2,
+			.y = (window_height - (HEIGHT * DEPTH)) / 2,
+			.w = WIDTH * DEPTH,
+			.h = HEIGHT * DEPTH,
+		};
 
 		SDL_RenderCopy(renderer, texture, NULL, &texture_dimentions);
 
